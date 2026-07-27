@@ -1,4 +1,6 @@
-@import 'tailwindcss': root {
+@import 'tailwindcss';
+
+:root {
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -29,6 +31,7 @@
     font-size: 16px;
   }
 }
+
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @import '@fontsource-variable/geist';
@@ -98,10 +101,6 @@ h2 {
   @media (max-width: 1024px) {
     font-size: 20px;
   }
-}
-
-p {
-  margin: 0;
 }
 
 code,
@@ -235,9 +234,11 @@ code {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
