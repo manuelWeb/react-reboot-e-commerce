@@ -1,19 +1,24 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 
 import App from './App'
 
 describe('App', () => {
-  it('increments the counter when the user clicks the button', async () => {
-    const user = userEvent.setup()
-
+  it('displays the product catalogue', async () => {
     render(<App />)
 
-    const counter = screen.getByRole('button', { name: /count is 0/i })
+    expect(
+      await screen.findByRole('heading', {
+        name: /our catalogue/i,
+      }),
+    ).toBeInTheDocument()
 
-    await user.click(counter)
+    expect(screen.getByText(/10 products/i)).toBeInTheDocument()
 
-    expect(counter).toHaveAccessibleName(/count is 1/i)
+    const productHeadings = await screen.findAllByRole('heading', {
+      level: 2,
+    })
+
+    expect(productHeadings).toHaveLength(10)
   })
 })
