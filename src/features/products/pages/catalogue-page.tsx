@@ -1,4 +1,4 @@
-import { ProductGrid } from '../components/product-grid'
+import { CatalogueContent } from '../components/catalogue-content'
 import { useProducts } from '../hooks/use-products'
 
 export function CataloguePage() {
@@ -28,9 +28,10 @@ export function CataloguePage() {
     case 'success':
       return (
         <section>
-          <h1>Our catalogue</h1>
-          <p className="mb-4">{productState.products.length} products</p>
-          <ProductGrid products={productState.products} />
+          <h1 className="sm:text-6xl text-4xl font-extralight mb-8">
+            Our catalogue
+          </h1>
+          <CatalogueContent products={productState.products} />
         </section>
       )
   }
