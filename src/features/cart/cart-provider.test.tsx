@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useCart } from './cart-context'
 import type { PropsWithChildren } from 'react'
 import { CartProvider } from './cart-provider'
@@ -10,6 +10,9 @@ function Wrapper({ children }: PropsWithChildren) {
 }
 
 describe('CartProvider', () => {
+  beforeEach(() => {
+    window.localStorage.clear()
+  })
   it('throws when useCart is used outside CartProvider', () => {
     expect(() => {
       renderHook(() => useCart())
@@ -113,5 +116,38 @@ describe('CartProvider', () => {
     expect(result.current.lines).toEqual(storedCart.lines)
     expect(result.current.itemCount).toBe(1)
     expect(result.current.totalInCents).toBe(1200)
+  })
+
+  it('persists the cart after its state change', () => {
+    // Arrange
+    const product: CartProduct = {
+      id: 'product-1',
+      name: 'chair',
+      imageUrl: './chair.jpg',
+      priceInCents: 1200,
+    }
+    const storage = {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+    }
+    function PersistentCartWrapper({ children }: PropsWithChildren) {
+      return <CartProvider storage={storage}>{children}</CartProvider>
+    }
+    const { result } = renderHook(() => useCart(), {
+      wrapper: PersistentCartWrapper,
+    })
+    storage.setItem.mockClear()
+    // Act
+    act(() => {
+      result.current.addItem(product)
+    })
+    // Assert
+    expect(storage.setItem).toHaveBeenCalledWith(
+      'react-reboot-cart',
+      JSON.stringify({
+        version: 1,
+        lines: [{ ...product, quantity: 1 }],
+      }),
+    )
   })
 })
