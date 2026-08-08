@@ -2,16 +2,18 @@ import { useReducer, type ReactNode } from 'react'
 import { CartContext, type CartContextValue } from './cart-context'
 import { cartReducer } from './cart-reducer'
 import { getCartItemCount, getCartTotalInCents } from './cart-selectors'
-import type { CartState } from './cart'
-
-const initialState: CartState = { lines: [] }
+import { loadCartState } from './cart-storage'
 
 type CartProviderProps = {
   children: ReactNode
+  storage?: Pick<Storage, 'getItem' | 'setItem'>
 }
 
-export function CartProvider({ children }: CartProviderProps) {
-  const [state, dispatch] = useReducer(cartReducer, initialState)
+export function CartProvider({
+  children,
+  storage = window.localStorage,
+}: CartProviderProps) {
+  const [state, dispatch] = useReducer(cartReducer, storage, loadCartState)
 
   const value: CartContextValue = {
     lines: state.lines,

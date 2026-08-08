@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { useCart } from './cart-context'
 import type { PropsWithChildren } from 'react'
 import { CartProvider } from './cart-provider'
@@ -82,5 +82,36 @@ describe('CartProvider', () => {
     expect(result.current.lines).toEqual([])
     expect(result.current.itemCount).toBe(0)
     expect(result.current.totalInCents).toBe(0)
+  })
+
+  it('restores the stored cart as its initial state', () => {
+    // Arrange
+    const storedCart = {
+      version: 1,
+      lines: [
+        {
+          id: 'product-1',
+          name: 'chair',
+          imageUrl: './chair.jpg',
+          priceInCents: 1200,
+          quantity: 1,
+        },
+      ],
+    }
+    const storage = {
+      getItem: vi.fn(() => JSON.stringify(storedCart)),
+      setItem: vi.fn(),
+    }
+    function StoredCartWrapper({ children }: PropsWithChildren) {
+      return <CartProvider storage={storage}>{children}</CartProvider>
+    }
+    // Act
+    const { result } = renderHook(() => useCart(), {
+      wrapper: StoredCartWrapper,
+    })
+    // Assert
+    expect(result.current.lines).toEqual(storedCart.lines)
+    expect(result.current.itemCount).toBe(1)
+    expect(result.current.totalInCents).toBe(1200)
   })
 })
