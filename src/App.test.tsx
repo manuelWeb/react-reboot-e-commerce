@@ -15,10 +15,8 @@ describe('App', () => {
 
     expect(screen.getByText(/10 products/i)).toBeInTheDocument()
 
-    const productHeadings = await screen.findAllByRole('heading', {
-      level: 2,
-    })
+    const productCards = await screen.findAllByRole('article')
 
-    expect(productHeadings).toHaveLength(10)
+    expect(productCards).toHaveLength(10)
   })
 })
