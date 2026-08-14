@@ -1,3 +1,4 @@
+import { CartSummary } from '@/features/cart/components/cart-summary'
 import { CatalogueContent } from '../components/catalogue-content'
 import { useProducts } from '../hooks/use-products'
 
@@ -28,6 +29,7 @@ export function CataloguePage() {
     case 'success':
       return (
         <section>
+          <CartSummary />
           <h1 className="sm:text-6xl text-4xl font-extralight mb-8">
             Our catalogue
           </h1>

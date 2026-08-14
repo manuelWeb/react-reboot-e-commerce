@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '@/test/test-utils'
 import { describe, expect, it } from 'vitest'
 
 import App from './App'
@@ -15,10 +15,8 @@ describe('App', () => {
 
     expect(screen.getByText(/10 products/i)).toBeInTheDocument()
 
-    const productHeadings = await screen.findAllByRole('heading', {
-      level: 2,
-    })
+    const productCards = await screen.findAllByRole('article')
 
-    expect(productHeadings).toHaveLength(10)
+    expect(productCards).toHaveLength(10)
   })
 })

@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import { CartProvider } from './features/cart/cart-provider.tsx'
 
 async function enableMocking() {
   const shouldEnableMocking =
@@ -19,7 +20,9 @@ async function enableMocking() {
 enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </StrictMode>,
   )
 })

@@ -283,12 +283,12 @@ expect(state.products).toEqual(products)
 
 ## Scénarios couverts par le hook
 
-| Scénario | Handler MSW | État final attendu |
-|---|---|---|
-| Chargement réussi | Fixture `products` | `success` avec les produits |
-| Catalogue vide | `HttpResponse.json([])` | `empty` |
-| Service indisponible | Réponse `503` | `error` avec une `Error` |
-| Nouvelle tentative | Premier appel `503`, second appel avec fixture | `error`, puis `loading`, puis `success` |
+| Scénario             | Handler MSW                                    | État final attendu                      |
+| -------------------- | ---------------------------------------------- | --------------------------------------- |
+| Chargement réussi    | Fixture `products`                             | `success` avec les produits             |
+| Catalogue vide       | `HttpResponse.json([])`                        | `empty`                                 |
+| Service indisponible | Réponse `503`                                  | `error` avec une `Error`                |
+| Nouvelle tentative   | Premier appel `503`, second appel avec fixture | `error`, puis `loading`, puis `success` |
 
 Cette couverture vérifie les comportements publics du hook sans tester ses
 détails internes comme la valeur exacte de `requestId`.

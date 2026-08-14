@@ -1,3 +1,4 @@
+import { AddToCartButton } from '@/features/cart/components/add-to-cart-button'
 import type { Product } from '../product'
 
 const priceFormatter = new Intl.NumberFormat('en-GB', {
@@ -20,9 +21,17 @@ export function ProductCard({ product }: ProductCardProps) {
         <h2 className="text-xl font-semibold">{product.name}</h2>
         <p>{product.category}</p>
         <p>{priceFormatter.format(product.priceInCents / 100)}</p>
-        <p>
+        <p className="mb-2">
           {product.availability === 'available' ? 'Available' : 'Unavailable'}
         </p>
+
+        <AddToCartButton
+          product={product}
+          disabled={product.availability !== 'available'}
+          size="lg"
+        >
+          Add to cart
+        </AddToCartButton>
       </div>
     </article>
   )
