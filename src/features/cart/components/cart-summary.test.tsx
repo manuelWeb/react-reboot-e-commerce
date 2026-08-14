@@ -91,4 +91,33 @@ describe('CartSummary', () => {
       }),
     ).toBeInTheDocument()
   })
+
+  test('removes the cart line when decreasing its last item', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <>
+        <AddToCartButton product={product} />
+        <CartSummary />
+      </>,
+    )
+
+    await user.click(
+      screen.getByRole('button', {
+        name: 'Add to cart',
+      }),
+    )
+
+    await user.click(
+      screen.getByRole('button', {
+        name: `Decrease ${product.name} quantity`,
+      }),
+    )
+
+    expect(
+      screen.getByRole('region', {
+        name: 'My basket is empty',
+      }),
+    ).toBeInTheDocument()
+  })
 })

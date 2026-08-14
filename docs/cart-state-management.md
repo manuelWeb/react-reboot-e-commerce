@@ -21,14 +21,14 @@
 
 Le panier est divisé en plusieurs responsabilités :
 
-| Élément | Responsabilité |
-|---|---|
-| `cartReducer` | Calculer le prochain état à partir de l’état courant et d’une action |
-| Selectors | Calculer les valeurs dérivées du panier |
+| Élément        | Responsabilité                                                          |
+| -------------- | ----------------------------------------------------------------------- |
+| `cartReducer`  | Calculer le prochain état à partir de l’état courant et d’une action    |
+| Selectors      | Calculer les valeurs dérivées du panier                                 |
 | `CartProvider` | Initialiser l’état, exécuter le reducer et exposer les commandes métier |
-| `CartContext` | Transporter la valeur construite par le Provider |
-| `useCart` | Permettre aux composants de consommer le Context de manière sécurisée |
-| `cart-storage` | Charger, valider et sauvegarder l’état persistant |
+| `CartContext`  | Transporter la valeur construite par le Provider                        |
+| `useCart`      | Permettre aux composants de consommer le Context de manière sécurisée   |
+| `cart-storage` | Charger, valider et sauvegarder l’état persistant                       |
 
 ```text
 Interface utilisateur
@@ -123,7 +123,7 @@ Cela reste une protection TypeScript appliquée pendant le développement. Elle 
 Un reducer est une fonction pure :
 
 ```ts
-(previousState, action) => nextState
+;(previousState, action) => nextState
 ```
 
 Il reçoit :
@@ -411,8 +411,7 @@ plusieurs représentations dérivées cohérentes
 Le Context est créé au niveau du module :
 
 ```ts
-export const CartContext =
-  createContext<CartContextValue | null>(null)
+export const CartContext = createContext<CartContextValue | null>(null)
 ```
 
 ### Pourquoi le créer au niveau du module ?
@@ -469,11 +468,7 @@ export function useCart() {
 Un composant utilise :
 
 ```ts
-const {
-  lines,
-  itemCount,
-  addItem,
-} = useCart()
+const { lines, itemCount, addItem } = useCart()
 ```
 
 Il n’a pas besoin :
@@ -510,7 +505,7 @@ const [state, setState] = useState()
 peut être représenté conceptuellement comme :
 
 ```ts
-[State, Dispatch]
+;[State, Dispatch]
 ```
 
 Un custom hook peut retourner :
@@ -543,19 +538,15 @@ Sans Context, `itemCount` devrait potentiellement traverser `App`, `Layout` et `
 Le Provider initialise l’état avec :
 
 ```ts
-const [state, dispatch] = useReducer(
-  cartReducer,
-  storage,
-  loadCartState,
-)
+const [state, dispatch] = useReducer(cartReducer, storage, loadCartState)
 ```
 
 Les trois arguments ont des rôles distincts :
 
-| Argument | Rôle |
-|---|---|
-| `cartReducer` | Décrire comment calculer les prochains états |
-| `storage` | Fournir la donnée transmise à l’initialisateur |
+| Argument        | Rôle                                                |
+| --------------- | --------------------------------------------------- |
+| `cartReducer`   | Décrire comment calculer les prochains états        |
+| `storage`       | Fournir la donnée transmise à l’initialisateur      |
 | `loadCartState` | Construire le premier état à partir de cette donnée |
 
 ### Évaluation des arguments en JavaScript
@@ -565,11 +556,7 @@ Avant d’appeler une fonction, JavaScript évalue les expressions utilisées co
 Dans :
 
 ```ts
-useReducer(
-  cartReducer,
-  storage,
-  loadCartState,
-)
+useReducer(cartReducer, storage, loadCartState)
 ```
 
 JavaScript évalue successivement :
@@ -868,15 +855,13 @@ si NON A OU NON B OU NON C.
 C’est pourquoi :
 
 ```ts
-typeof value.id === 'string' &&
-typeof value.name === 'string'
+typeof value.id === 'string' && typeof value.name === 'string'
 ```
 
 devient, lorsqu’on cherche l’invalidité :
 
 ```ts
-typeof value.id !== 'string' ||
-typeof value.name !== 'string'
+typeof value.id !== 'string' || typeof value.name !== 'string'
 ```
 
 Ressources complémentaires :
@@ -932,10 +917,7 @@ storage.setItem.mock.calls[0]
 Elle contient les arguments de ce premier appel :
 
 ```ts
-[
-  'react-reboot-cart',
-  '{"version":1,"lines":[]}',
-]
+;['react-reboot-cart', '{"version":1,"lines":[]}']
 ```
 
 ### Valeur retournée par un mock
@@ -949,9 +931,7 @@ storage.getItem.mockReturnValue(null)
 ou :
 
 ```ts
-storage.getItem.mockReturnValue(
-  JSON.stringify(storedCart),
-)
+storage.getItem.mockReturnValue(JSON.stringify(storedCart))
 ```
 
 Le code testé reçoit alors cette valeur comme s’il appelait le véritable `localStorage`.
@@ -969,7 +949,7 @@ const { result } = renderHook(() => useCart(), {
 Cette callback :
 
 ```ts
-() => useCart()
+;() => useCart()
 ```
 
 ne signifie pas seulement « déclencher le hook ». Elle retourne la valeur produite par `useCart`.
@@ -992,11 +972,7 @@ renderHook(useCart())
 
 ```tsx
 function TestProviders({ children }) {
-  return (
-    <CartProvider storage={testStorage}>
-      {children}
-    </CartProvider>
-  )
+  return <CartProvider storage={testStorage}>{children}</CartProvider>
 }
 ```
 
