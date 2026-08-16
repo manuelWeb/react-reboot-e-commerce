@@ -1,0 +1,2 @@
+# Run the complete test suite once before sending commits to the remote repository.
+npm run test:run

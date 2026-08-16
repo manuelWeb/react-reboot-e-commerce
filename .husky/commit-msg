@@ -1,0 +1,2 @@
+# $1 is the path to the temporary file containing the commit message.
+npm run lint:commit -- --edit "$1"
